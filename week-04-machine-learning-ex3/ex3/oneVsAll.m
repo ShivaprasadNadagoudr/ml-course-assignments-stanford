@@ -51,12 +51,25 @@ X = [ones(m, 1) X];
 
 
 
+% Set Initial theta
+initial_theta = zeros(n + 1, 1);
 
+% Set options for fminunc
+options = optimset('GradObj', 'on', 'MaxIter', 50);
 
+% Variable 'X' contains data in dimension (5000 * 400). 
+% 5000 = Total no. of training examples,
+% Total no. Features  = 400 i.e. 400 pixels(20x20) / training sample
 
+for c = 1:num_labels 
+  all_theta(c,:) = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), ...
+                            initial_theta, options);
+  % remember y(5000*1) is an array of labels i.e. it contains actual digit names
+  % (y==c) will return a vector with values 0 or 1. 1 at places where y==c 
 
-
-
+  % 't' is passed as dummy parameter which is initialized with 
+  % 'initial_theta' first, then subsequent values are choosen by fmincg
+end
 
 
 
